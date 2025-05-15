@@ -1,0 +1,58 @@
+
+CREATE DATABASE IF NOT EXISTS rrhh_udigital;
+USE rrhh_udigital;
+
+
+CREATE TABLE funcionario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_identificacion VARCHAR(20) NOT NULL,
+    numero_identificacion VARCHAR(20) NOT NULL UNIQUE,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    estado_civil VARCHAR(30),
+    sexo VARCHAR(10),
+    direccion VARCHAR(150),
+    telefono VARCHAR(20),
+    fecha_nacimiento DATE
+);
+
+-- Tabla grupo_familiar
+CREATE TABLE grupo_familiar (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    funcionario_id INT NOT NULL,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    fecha_nacimiento DATE,
+    rol VARCHAR(50),
+    FOREIGN KEY (funcionario_id) REFERENCES funcionario(id) ON DELETE CASCADE
+);
+
+-- Tabla academico
+CREATE TABLE academico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    funcionario_id INT NOT NULL,
+    universidad VARCHAR(100) NOT NULL,
+    nivel_estudio VARCHAR(50),
+    titulo_obtenido VARCHAR(100),
+    FOREIGN KEY (funcionario_id) REFERENCES funcionario(id) ON DELETE CASCADE
+);
+
+-- Datos iniciales para funcionario
+INSERT INTO funcionario (tipo_identificacion, numero_identificacion, nombres, apellidos, estado_civil, sexo, direccion, telefono, fecha_nacimiento)
+VALUES 
+('CC', '123456789', 'Juan', 'Pérez', 'Soltero', 'Masculino', 'Calle 123', '3124567890', '1990-05-12'),
+('TI', '987654321', 'María', 'Gómez', 'Casada', 'Femenino', 'Carrera 45', '3001234567', '1985-10-20');
+
+-- Datos iniciales para grupo familiar
+INSERT INTO grupo_familiar (funcionario_id, nombres, apellidos, fecha_nacimiento, rol)
+VALUES 
+(1, 'Laura', 'Pérez', '2015-04-01', 'Hija'),
+(1, 'Ana', 'Ramírez', '1992-09-17', 'Esposa'),
+(2, 'Luis', 'Gómez', '2010-08-12', 'Hijo');
+
+-- Datos iniciales para académico
+INSERT INTO academico (funcionario_id, universidad, nivel_estudio, titulo_obtenido)
+VALUES 
+(1, 'Universidad de Antioquia', 'Pregrado', 'Ingeniero de Sistemas'),
+(1, 'Politécnico Jaime Isaza Cadavid', 'Posgrado', 'Especialista en Seguridad Informática'),
+(2, 'Universidad Nacional', 'Pregrado', 'Psicóloga');
